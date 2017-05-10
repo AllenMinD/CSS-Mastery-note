@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>suckerfish下拉菜单</title>
+</head>
+
+<style>
+	/*Suckerfish下拉菜单技术 CSS部分*/
+	/*第一步：首先设置水平菜单的样式：margin，padding设为0，默认项目符号去掉，li向左浮动*/
+	/*这里注意：因为其中包含的列表项都是浮动的，它们不占据空间，这回到时列表收缩，为了解决这个问题，我们要把父列表和子导航列表也浮动*/
+	ul.nav, ul.nav li ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		float: left;
+		border: 1px solid #486B02;
+		background-color: #8BD400;
+	}
+
+	ul.nav li {
+		float: left;
+		width: 8em;
+		background: #8BD400;
+	}
+
+	/*第二步：为了确保下拉菜单中的菜单项垂直对齐，需要把列表的宽度设置为与列表项相同*/
+	/*第三步：为了在激活之前隐藏实际的下拉菜单，需要把它们的position设置为absolute，然后把它们隐藏到屏幕左边之外*/
+	ul.nav li ul {
+		width: 8em;
+		position: absolute;
+		left:-999em;
+	}
+
+	/*第四步：这是关键之处。在父列表项中添加:hover，把下拉菜单的位置改回正常位置，这样下拉菜单就会重新出现*/
+	.nav li:hover ul {
+		left: auto;
+	}
+
+	/*第五步：把导航链接<a>设置为block，然后修改列表外观，设置背景颜色和鞋面边距*/
+	ul.nav a {
+		display: block;
+		color: #2B3F00;
+		text-decoration: none;
+		padding: 0.3em 1em;
+		border-right: 1px solid #486B02;
+		border-left: 1px solid #E4FFD3;
+	}
+
+	ul.nav li li a {
+		border-top: 1px solid #E4FFD3;
+		border-bottom: 1px solid #486B02;
+		border-left: 0;
+		border-right: 0;
+	}
+
+	ul.nav li:last-child a {
+		border-right: 0;
+		border-bottom: 0;
+	}
+
+	ul a:hover,
+	ul a:focus {
+		color: #E4FFD3;
+		background-color: #6DA203;
+	}
+
+</style>
+
+<body>
+	<!-- Suckerfish下拉菜单技术 HTML部分 -->
+	<ul class="nav">
+		<li><a href="#">Home</a></li>
+		<li><a href="#">Products</a></li>
+		<li>
+			<a href="#">Services</a>
+			<ul>
+				<li><a href="#">Design</a></li>
+				<li><a href="#">Development</a></li>
+				<li><a href="#">Consultancy</a></li>
+			</ul>
+		</li>
+		<li><a href="#">Contact Us</a></li>
+	</ul>
+</body>
+</html>
