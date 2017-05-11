@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>CSS图像映射</title>
+</head>
+
+<style>
+	.imagemap {
+		width: 833px;
+		height: 500px;
+		position: relative; /*图像映射的关键*/
+	}
+
+	.imagemap ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.imagemap a {
+		position: absolute; /*对列表项中的锚 在图片上 进行定位*/
+		display: block;
+		width: 50px;
+		height: 60px;
+		text-indent: -1000em;
+	}
+
+	/*把各个链接定位到相应图像上*/
+	.imagemap .roof a {
+		top: 90px;
+		left: 585px;
+	}
+
+	.imagemap .window a {
+		top: 250px;
+		left: 540px;
+	}
+
+	.imagemap .road a {
+		top: 350px;
+		left: 130px;
+	}
+
+	/*翻转效果*/
+	.imagemap a:hover,
+	.imagemap a:focus {
+		border: 3px solid #fff;
+
+	}
+</style>
+
+<body>
+	<div class="imagemap">
+		<img src="pic13.jpg" alt="一张图片" width="833" height="500">
+		
+		<!-- 链接列表 -->
+		<ul>
+			<li class="roof">
+				<a href="#">roof</a>
+			</li>
+			<li class="window">
+				<a href="#">window</a>
+			</li>
+			<li class="road">
+				<a href="#">road</a>
+			</li>
+		</ul>
+	</div>
+</body>
+</html>
