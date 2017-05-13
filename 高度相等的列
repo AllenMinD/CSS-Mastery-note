@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>高度相等的列</title>
+</head>
+
+<style>
+	.wrapper {
+		width: 100%;
+		overflow: hidden;
+		position: relative;
+	}
+
+	.box {
+		width: 250px;
+		margin-left: 20px;
+		float: left;
+		display: inline;
+		padding-top: 20px;
+		padding-left: 20px;
+		padding-right: 20px;
+
+		/*给每个框设置大的底内边距（padding-bottom），然后用数值相似的负外边距（margin-bottom）消除这个高度。*/
+		/*这个事例中，给每个元素设置550px的padding-bottom，-500px的margin-bottom，50px的差值在每个框的底部形成可见的内边距*/
+		padding-bottom: 550px; 
+		margin-bottom: -500px;
+	
+		background-color: #89ac10;
+		margin-left: 20px;
+	}
+
+	/*把box的底部补齐*/
+	.bottom {
+		position: absolute;
+		bottom: 0px;
+		height: 50px;  /*.bottom的高度为padding-bottom + margin-bottom*/
+		width: 290px;
+		background-color: #89ac10;
+		margin-left: -20px;
+	}
+</style>
+
+<body>
+	<div class="wrapper">
+		<div class="box">
+			<h1>Andy Budd</h1>
+			<p>哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈哈哈啊哈哈哈啊哈哈哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈</p>
+			<div class="bottom"></div>
+		</div>
+
+		<div class="box">
+			<h1>Richard Rutter</h1>
+			<p>哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈</p>
+			<div class="bottom"></div>
+		</div>
+
+		<div class="box">
+			<h1>Jeremy Keith</h1>
+			<p>哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈</p>
+			<div class="bottom"></div>
+		</div>				
+	</div>
+</body>
+</html>
