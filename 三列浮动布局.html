@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>浮动布局</title>
+</head>
+
+<style>
+	div {
+		background-color: #e1e1e1;
+	}
+
+	.content {
+		overflow: hidden;  /*用来清除浮动*/
+
+		margin-left: auto;
+		margin-right: auto;
+		padding: 10px;
+		width: 960px;
+	}
+	
+	.content .primary {
+		width: 670px;
+		float: right;
+		display: inline;
+	}
+
+	.content .secondary {
+		width: 230px;	
+		float: left;
+		display: inline;
+	}
+
+	/*.primary里面的两个div的CSS*/
+	.content .primary .primary {
+		width: 400px;
+		float: left;
+		display: inline;
+	}
+
+	.content .primary .secondary {
+		width: 230px;
+		padding-right: 20px;
+		float: right;
+		display: inline;
+	}
+</style>
+
+<body>
+	<div class="content">
+		<div class="primary">
+				<div class="primary">主要内容div1</div>
+				<div class="secondary">主要内容div2</div>
+		</div>
+
+		<div class="secondary">次要内容</div>
+	</div>
+</body>
+</html>
