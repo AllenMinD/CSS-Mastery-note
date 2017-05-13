@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>浮动布局</title>
+</head>
+
+<style>
+/*步骤
+1.为每个列设置宽度 
+2.将次要内容左浮动，主要内容右浮动 
+3.在主内容中添加一点padding（以避免其中包含的文本紧挨着元素边缘） 
+4.在所有浮动元素中添加display：inline（这个预防措施用来防止IE中的双外边距浮动产生的bug）
+5.对包含浮动元素的容器进行浮动清除（overflow：hidden）*/
+	.content .primary {
+		width: 650px;
+		padding-right: 20px;
+		float: right;
+		display: inline; /*在所有浮动元素中添加了display:inline为了防止IE中双外边距浮动产生bug*/
+
+		background-color: #e1e1e1;
+		border: 1px solid #000;
+	}
+
+	.content .secondary {
+		width: 230px;
+		float: left;
+		display: inline; 
+
+		background-color: #e1e1e1;
+		border: 1px solid #000;
+	}
+
+	.content {
+		overflow: hidden;
+
+		width: 920px;
+		margin-left: auto;
+		margin-right: auto;
+		background-color: #e1e1e1;
+		border: 1px solid #000;
+		padding: 10px;
+	}
+</style>
+
+<body>
+	<div class="content">
+		<!-- 这个设计的次要内容（.secondary)位于页面左面，主要类容(.primary)位于右边；但是为了提要易用性和可访问性，在html中.primary放在了.secondary前面 -->
+		<!-- 这样做原因是：主内容是页面上最重要的东西，在html文档中应该先出现。其次，这样可以方便屏幕阅读器用户，它们不用经过很长事件的链接列表和不太重要的内容就能找到主内容部分 -->
+		<div class="primary">我是主要内容我是主要内容我是主要内容我是主要内容我是主要内容我是主要内容</div>
+
+		<div class="secondary">我是次要内容我是次要内容我是次要内容我是次要内容我是次要内容我是次要内容我是次要内容我是次要内容</div>
+	</div>
+</body>
+</html>
