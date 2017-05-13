@@ -1,0 +1,1011 @@
+第一章 基础知识
+设计代码的结构
+有意义的文档的重要性
+有意义的页面人类更容易处理。
+程序和其他设备也可以理解有意义的标记（语义标记）。如搜索引擎可以识别出<h1>
+有意义的标记可以简便地将元素调整为你所需的样式。如h1、ul、strong、blockquote和cite等本身自带了样式。
+命名约定
+在分配ID和类名时，一定要尽可能保持名称与表现方式无关。应该根据”它们是什么“来为元素命名，而不应该根据”它们的外观如何“来命名。例如.warning、.notification就比简单的.red要好。（这种方式会让代码更有意义，并且避免代码与设计不同步，可以在整个网站中重用这些类名）
+在写ID和类名时，注意区分大小写。为了方便辨认，本书作者推荐全部用小写，多个单词之间用连字符号 - 分隔。如 any-budd 比 anyBudd清楚得多。
+什么时候使用ID和类名
+只有在绝对确定这个元素只会出现一次的情况下，才应用 ID。
+如果你认为以后可能需要相似的元素，就使用 类。
+“多类症”
+css新手常常在几乎所有东西上添加类，从而试图更精细地控制它们的样式。但是，“类”就被滥用了，这称为“多类症”。它相当于在文档中添加了无意义的代码。如果你发现自己添加了很多类，那么这很可能以为着你的HTML文档的结构有问题。
+只要你发现类名中出现了重复的单词，比如 .news-head 和 .news-text 或者 .section-head 和 .section-foot，就应该考虑是否可以把这些元素分解成它们的组成部分。例如把 .new变成div.new，把 -head直接写成 <h1>、      -text写成<p>，而不需要类名。在选择这些元素的时候直接用后代选择器就可以选到：.news h1 {...} 、.news p {...}。这种方法叫做【层叠】。
+“多div症”
+过度使用div称为“多div症”。这是代码结构不合理而且过分复杂的一个信号。
+为了将不必要的标记减到最少，应该只在没有元素能够实现区域分割的情况下使用div。比如，如果一个<ul>就没有必要嵌套在一个<div>里面，应为<ul>本身就是块级元素，可以自己实现区域划分。
+微格式
+由于HTML中缺少相应的元素，很难突出显示人、地点或日期等类型的信息。为了解决这个问题，有一组开发人员决定开发一套标准的命名约定和标记模式来表示这些数据。现在称为【微格式】。
+当前有9个正式的微格式，还有14个格式草案：hCalendar（用于日期、日历和事件）、hCard（用于人和组织）、XFN（用于人之间的关系）、hProduct（产品说明）【草案】、hRecipe（原料和烹饪步骤）【草案】、hReview（产品和事件审查）【草案】、hAtom（博客帖子等片段式内容）【草案】。官网：http://microformats.org/
+HTML和CSS的不同版本
+文档类型、DOCTYPE切换和浏览器模式
+DTD（文档类型定义）是一组机器可读的规则，它们定义XML或者HTML的特定版本中允许有什么，不允许有什么。
+浏览器通过DOCTYPE声明来了解要使用哪个DTD，由此知道要使用HTML的哪个版本。
+可以使用W3C验证器（一个验证器bookmarklet）或 火狐的开发者工具等插件来检查HTML是否有效。
+可以访问http://validator.w3.org/，输入自己的url来对自己的站点进行在线验证。
+也可以使用一个验证器bookmarklet（也称favelet），这是一小段可以存储在浏览器的书签或者收藏夹中的javascript。单击这个书签就会触发javascript动作。验证器通过W3C验证器运行当前页面并显示结果。在https://validator.w3.org/favelets.html找到这些验证器bookmarklet。
+一定要在站点的每个页面上包含形式完整的DOCTYPE声明，并且在使用HTML时选择严格的DTD
+
+
+第二章 为样式找到应用目标（CSS选择器）
+常用的选择器
+类型选择器（一般叫元素选择器）：如p {...} 、h1 {...}
+后代选择器（所有后代，包含子，孙）。后代选择器由其他两个选择器之间的空格表示。如 div h {...} 、 ul li {...}
+ID选择器： #waring {...}
+类选择器： .class-name {...}
+伪类
+“伪类”和“伪元素”是不同的。“伪类”指的是 :link 、:visited、:hover、 :active、:focus。而“伪元素”指的是 :first-letter、:first-line、:before、:after
+:link 、:visited称为【链接伪类】，只能用于“锚元素”。
+:hover、 :active、:focus称为【动态伪类】，理论上可以用于任何元素。
+通用选择器
+星号 * 被用作通用选择器。
+在与其他选择器结合使用时，通用选择器可以用来对某个元素的所有后代应用样式，或者跳过一级后代。
+高级选择器
+子选择器： ">"。子选择器只会选择元素的【直接后代】，即【子元素】。
+相邻同胞选择器：“+”。该选择器可用于定位同一个父元素下某个元素之后的元素。例如：h1 + p {...} 会选择到h1元素后面的第一个p元素
+属性选择器：“[...]”。该选择器可以根据某个【属性是否存在】或者【属性的值】来选择元素。例如acronym[title] 、 a[href="#] 。一些属性可以有多个值，值之间用空格分隔。属性选择器允许根据【其中某个属性值】或【某个属性值中的某段子串】寻找元素。例如 a[rel~="co"]表示属性rel有多个值，其中一个值是“co”、a[rel^="c"]表示属性rel含有以“c”开头的属性值、a[rel$="d"]表示属性rel含有以“d”结尾的属性值
+新的CSS3选择器
+特殊性和层叠的作用
+同一个元素可能会有多个css规则。CSS通过一个称为【层叠】的过程处理这种冲突。
+【层叠】给每个css规则分配一个【重要度】
+用户通过将任何规则指定为 !impotant 来提高重要度，让它优先于任何规则，甚至优先于作者加上的！impotant标志的规则。
+层叠采用的重要度次序（由高到低）如下：标有！impotant的用户样式 > 标有！impotant的作者样式 > 作者样式 > 用户样式 > 浏览器/用户代理应用的样式
+确定完样式的【重要度】，然后要具体根据选择器的【特殊性】来确定规则的次序。具有更特殊选择器的规则优先于具有一般选择器的规则。如果两个规则的特殊性相同，那么后定义的规则优先。
+选择器的【特殊性】分为4个等级：a、b、c和d：如果是行内样式，那么a=1（即内嵌在标签中的样式，如<p style="..."> ... </p>）；b等于ID选择器的总数（#的个数）；c等于类、伪类和属性选择器的数量（. : []的个数）；d等于类型选择器（即元素选择器）和伪元素选择器（:first-line、:first-letter等）的数量。
+举例：#content div#main-content h2 {...} （特殊性为：0 2 0 2） 比 #content #main-content > h2 {...} （特殊性为：0 2 0 1） 更特殊，因为 0202 > 0201，选中的元素会使用前者的css规则。
+如果你遇到了似乎没有起作用的css规则，很可能是出现了特殊性冲突。为了避免过分混乱，应该尽量保持一般性样式“非常一般”，特殊样式”尽可能特殊“。这样就不需要覆盖特殊样式了。如果发现不得不多次覆盖一般样式，那么从更一般的规则中删除需要覆盖的声明，并且将它显式地应用于需要它的每个元素，这样可能比较简单。
+一种有意思的特殊性用法是在主体（body）标签上应用类或ID。这样做之后，就可以根据页面或在站点范围内覆盖样式。使用”类“标识页面类型，使用”ID“标识特定页面，就可以非常灵活地控制站点的设计和布局。
+继承：应用了样式的元素的后代，会【继承】父元素样式的某些属性，比如颜色和字号。直接应用于元素的任何样式总是会覆盖继承而来的样式，这是因为继承而来的样式的特殊性为空。如果打算设置的属性是继承而来的属性，那么也可以将它应用与父元素，这样通过【继承】来对其后代元素添加相同的样式，可以大大节省代码量。
+计划和维护样式表
+css允许将所有样式放在一个或多个【外部样式表】中。将【外部样式表】附加到网页上有两种方法：链接（<link>）和 导入（@import）。导入样式表比链接样式表慢。
+除了导入到HTML文档之外，还可以从另一个样式表导入样式表。格式：@import url（样式表路径）; 例如 @import url(/css/layout.css);
+作者现在更倾向于使用单一CSS文件而不是多个小文件，使用单一CSS文件可以显著提高下载速度，还能把代码集中在一个地方，方便维护。
+为了便于维护，最好把样式表划分为几大块。CSS文件代码的结构如下：①把最一般的规则放在最前面（如主体样式、reset样式、链接、标题、其他元素）②处理更特殊的样式和辅助样式（表单、通知和错误、一致的条目）③处理布局和导航等结构性元素（标题、页脚、导航、布局、其他页面结构元素）④处理特定页面的相关组件（各个页面）⑤处理覆盖和例外情况
+如何在代码中加注释
+使用单一CSS文件，意味着一个CSS文件可能会非常长。这时就要使用好代码注释。
+由于代码可能非常长，那么寻找特定的样式会很困难。一种改进方法是在每个注释头中添加一个【标志】。这个标志仅仅是头文本前面的一个额外字符（例如可以用@group），一般不会出现在CSS文件中。然后，只要搜索（ctrl+F）这个标志和注释头的前几个字母，就可以立即找到要寻找的文件部分。例如对上面所说的CSS文件代码的结构 的注释为：/*@group general styles-----------------*/  /*@group helper styles-----------------*/ /*@group page structure-----------------*/ /*@group page components-----------------*/ /*@group over rides-----------------*/
+自我提示的、临时的注释举例。颜色查询表：/*@colordef #434343; dark gray*/ 、需要在以后进行修改修复或复查：/*@todo Remember to ......*/ 、遇到的问题 ：/*bugfix：Rule breaks in IE 5.2 Mac*/、表示目前还不完善：/*@workaround：....*/
+删除注释和优化样式表：在线CSS优化器（http://www.cssportal.com/css-optimize/）可以删除注释和删除空白。不过记得要备份一个带注释的版本哟。还有减小文件的最好方法还是启用服务器压缩。如果用Apache服务器，那么应该安装mod_gzip或mod_deflate。所有浏览器都可以处理GZIP压缩的文件并进行几时解压。服务器压缩可以将HTML和CSS文件减少大约80%。
+
+第三章 可视化格式模型
+盒模型的复杂性和特点
+盒模型：页面上每个元素被看作一个矩形框，这个框由元素的内容、内边距（padding）、边框（border）、外边距（margin）组成。margin可以是负值。
+如果在元素上添加背景，那么背景会应用于由内容和padding组成的区域。因此我们常常使用padding在内容周围创建一个隔离带，使内容不会与背景混在一起。
+CSS2.1包含outline属性，与border不同，轮廓绘制在元素框之上，所以它们不影响元素的大小和定位，有助于修复bug。
+padding、border、margin都是可选的，默认为0。（但是，用户代理样式表会为许多元素设置margin和padding）
+在CSS中，width和height指的是【内容区域】的宽度和高度。因此，整个元素框（整个盒子）的宽 = 2 * （margin+padding）+ width
+在IE6之前（包括IE6）在混杂模式中使用的是非标准盒模型。这时，width指的是内容、padding、margin的宽度总和。
+CSS3的box-sizing属性可以定义要使用哪种盒模型（标准/非标准盒模型）。
+如何以及为什么使用外边距叠加
+外边距的叠加：当两个或更多垂直margin相遇时，它们将形成一个外边距，这个外边距的高度等于两个发生叠加的margin的高度中的较大者。
+几种叠加的情形：①当一个元素出现在另一个元素上面时，第一个元素的底margin与第二个元素的顶margin发生叠加 ②当一个元素包含在另一个元素中时（假设没有padding和border将margin分隔），它们的顶/低margin也会发生叠加 ③假设有一个空元素，它有margin，但是没有padding和border，这种情况下，它的顶部margin和底部margin碰到了一起，它们会发生叠加 ④如果像第③点中的元素的margin碰到另外一个元素的margin，它们会继续叠加。
+只有普通文档流中块框的垂直margin才会发生margin的叠加。行内框（span）、浮动框、绝对定位框之间的margin不会叠加。
+可视化格式模型
+资料：http://www.cnblogs.com/diaoxiong/p/5684821.html
+另外注意的一点是，行内框（内联元素）的垂直margin、padding、border不会影响内框的高度。想要修改内联元素的框高度只能通过line-height来修改（用height也是不行的）。而想要修改内联元素的宽度可以通过水平的padding、border、margin来修改（用width是不行的）
+display：inline-block；的作用是把元素变得像内联元素一样水平排列（不换行），同时保持块元素的行为（能够显式滴设置宽度、高度、垂直margin、padding）。
+匿名块框：<div>some text <p>123</p></div>中的“some text”就是匿名块框，它被当作块级元素来对待。
+定位模型
+CSS中有3种定位机制：普通流、浮动、绝对定位。
+除非专门指定，否则所有框都在普通流中定位。
+绝对定位和相对定位之间的差异
+相对定位：如果对一个元素进行相对定位（relative），它将出现在它所在的位置上，然后，可以通过设置垂直或水平位置（top、left、right、bottom），让这个元素“相对于”它的起点移动。在使用相对定位时，无论是否移动，元素仍然占据原来的空间。因此，移动元素会导致它覆盖其他框。相对定位实际上被看作普通流定位模型的一部分，因为元素的位置是相对于它在普通流中的位置。
+绝对定位：绝对定位（absolute）的元素的位置是相对于距离它最近的那个已定位的祖先元素（一般为relative）确定的。如果元素没有已定位的祖先元素，那么它的位置是相对于初始包含块的（根据用户代理的不同，初始包含块可能是画布、<html>或者<body>）。绝对定位使元素的位置与普通流无关，因此不占据空间。普通流中的其他元素的布局就像绝对定位的元素不存在的一样。因此，绝对定位的元素也可以覆盖页面上的其他元素。
+z-index：通过设置z-index属性来控制框的叠放次序。z-index的值越高，框在栈中的位置就越高。
+固定定位：固定定位（fixed）是绝对定位的一种，差异在于fixed是相对与视口（viewport，通俗来讲就是浏览器窗口）来定位的。
+一句话总结：相对定位（relative）是“相对于”元素在普通文档流中的初始位置，而绝对定位是“相对于”距离它最近的已定位祖先元素，如果不存在已定位的祖先元素，那么相对与初始包含块（<html>或<body>）
+浮动和清理是如何工作的
+浮动的框可以左右移动，直到它的外边缘碰到包含框或另一个浮动框的边缘。
+浮动框也不在普通流中。普通流的框也会把浮动框当作不存在的一样。
+如果包含框太窄，无法容纳水平排列的3个浮动元素，那么其他浮动块向下移动，直到有足够空间的地方。如果浮动元素的高度不同，那么当它们向下移动时可能会被其他浮动元素“卡住”。
+创建浮动框使文本可以围绕图像。
+clear属性：值可以是left、right、both、none；表示框的哪一边不应该挨着浮动框。
+“塌方”现象：因为浮动元素不占据空间，所以容器元素不会包围浮动元素，这就会造成“塌方”。解决方法：方法① 在最后添加一个进行清理的空元素，可以迫使容器元素包围浮动元素。方法② 在原来的基础上直接浮动整个div容器。 方法③ 设置div容器的overflow属性（因为值为hidden或auto的overflow属性有一个副作用，就是会自动地清理掉包含的任何浮动元素）
+
+第四章 背景图像效果
+background基础
+background-image：url（背景图的路径）；
+background-color: transparent; （把背景颜色设置为透明）
+background-repeat：repeat（默认值，水平、垂直方向都平铺）/no-repeat（不平铺）/repeat-x（水平平铺）/repeat-y（垂直平铺）；
+background-position：left center；（这个属性是用来指出背景图的位置。这个属性由2个关键字组成，可以是left、right、top、bottom、center任意2个组合。也可以是用2个像素/百分数表示）
+background-attachment来指明背景图的位置是固定于视口的，还是随着包含块移动的。可简单理解为定义背景图片随滚动轴的移动方式。取值有4个：scroll:默认值，背景图相对于元素固定，背景随页面滚动而移动，即背景和内容绑定。fixed：背景图相对于视口固定，所以随页面滚动背景不动，相当于背景被设置在了body上。local：背景图相对于元素内容固定，inhert:继承，没什么说的。
+固定宽度和可变宽度的圆角框
+固定宽度的圆角框需要2个背景图：一个用于框的顶部，另一个用于底部。
+可变宽度的圆角框：用到滑动门技术，用这个技术制作出来的圆角框需要4个背景图。
+滑动门技术
+滑动门技术：随着尺寸的增加，大图像有更多的部分显露出来，这样就实现了框扩展的效果。这个方法被称为滑动门技术。（因为一个图像在另一个图像上滑动，将它的一部分隐藏起来）
+多个背景图像和border-radius属性
+CSS3中可以同时添加多个背景图。例如：
+.box {
+     background-image: url(1.png),
+                       url(2.png),
+                       url(3.png),
+                       url(4.png);
+
+     background-repeat: no-repeat,
+                        no-repeat,
+                        no-repeat,
+                        no-repeat;
+
+     background-position: top left,
+                          top right,
+                          bottom left,
+                          botrtom right;
+                        
+}
+CSS3中提供了border-radius属性来创建圆角框。我们只需要设置边框角的半径。例如：border-radius：5px；就创建了一个边框角半径为5px的圆角框。因为目前只有firefox和safari支持这个属性，所以要用-moz和-webkit前缀。例如：
+.box{
+     border-radius: 1em      
+     -moz-border-radius: 1em;
+     -webkit-border-radius: 1em; 
+};
+CSS3还有一个border-image属性，这个属性允许指定一个图像作为元素的边框。
+CSS投影
+传统投影方法：将一个大的投影图像（黑色背景图）作为容器div的背景，然后使用负的margin偏移嵌套在div中的img图像，这样看上去就好像img有了投影。
+传统的投影方法说白了就是利用黑色背景图片来作为投影，太麻烦了，不可能总要额外准备一张用作投影的背景图片吧，这样太抠门了。
+新的投影方法：CSS3新增特性 box-shadow。 box-shadow属性需要4个值：①水平偏移量（正数时阴影向右，负数向左），②垂直偏移量（正数阴影向下，负数向上） ，③投影的宽度（0时清晰，越大越模糊）（也就是模糊程度），④颜色
+img {
+     box-shadow: 3px 3px 6px #666;
+     -moz-box-shadow: 3px 3px 6px #666;
+     -webkit-box-shadow: 3px 3px 6px #666;
+}
+不透明度和RGBa
+传统的不透明度用opacity属性设置。opacity: 0~1; （0是完全透明，越大越不透明，1是完全不透明）。问题是：opacity除了对背景生效之外，应用它的元素的内容也会继承它。
+CSS3提供了RGBa属性。前面的“RGB”是传统的RGB颜色，后面的“a”是指alpha透明度，范围也是0~1，1表示100%不透明，0表示完全透明。举例：background-color: rgba（0，0，0，0.8）；
+让PNG适用于IE的老版本
+PNG格式文件支持alpha透明度 ，在IE7，IE8都可以使用这种PNG透明技术
+IE6不支持这种PNG透明技术。想要在IE6实现PNG透明，就要用专用的AlphaImageLoader过滤器。
+视差滚动
+视差滚动的概念：背景图像会以稍微不同的速度移动，让人觉得这个页面有深度（看上去好像有很多层画面叠起来）。这种现象称为视差滚动。
+视差效果教程：http://www.shejidaren.com/css-fixed-scroll-background.html 、http://www.zhangxinxu.com/wordpress/2015/03/css-only-parallax-effect/
+图像替换
+什么是图像替换？你可以像平常一样将文本添加到文档中，然后使用CSS隐藏这些文本，并在它的位置上显示一张背景图片（background）。这样的话，搜索引擎仍然可以搜索HTML文本，而且如果禁用CSS，文本仍然会显示。
+图像替换的方法：有 FIR 、Phark 、sIFR 等方法。
+
+第五章 对链接应用样式
+基于层叠对链接选择器进行排序
+链接伪类选择器（只能用于<a>）： :link（用来寻找没有被访问过的链接）、:visited（用来寻找已经被访问过的链接）
+动态伪类选择器（可用于任何元素）： :hover（用来寻找鼠标悬停处的元素）、:active（用来寻找被激活后的元素）、:focus（用来寻找被聚焦的元素）
+:hover和:focus一般同时使用，因为，在通过键盘移动到链接上时，这让链接显示的样式与鼠标悬停时相同。
+伪类选择器的使用次序：:link、a:visited、a:hover、a:focus、a:active（记忆：Lord Vader Hates Furry Animals）
+伪类选择器如果不按照以上次序使用的话，就有可能出现不起作用的情况，这是由于层叠造成的。前面说过：当两个规则具有相同特殊性时，后定义的规则优先。
+创建应用了样式的链接下划线
+与下划线有关的css属性：text-decoration：underline；（创建文本本身的下划线）、border-bottom：1px dotted #000；（利用边框来创建下划线）、border-bottom-style：solid；（直接定义边框下划线样式）
+利用背景图（background）来创建下划线：background：url（...） repeat-x left bottom；
+使用属性选择器对外部链接应用样式
+属性选择器：（以下“attr”表示<a>的某个属性，一般是href）a[ attr ^= "h" ]（寻找属性值以文本”h“开头的所有<a>）、a[ attr ~= "val" ]（寻找属性值列表中有一个属性值为”val“的<a>）、a[ attr $="e" ]（寻找属性值以文本”e“结尾的所有<a>）、a[ attr *="renyi" ]（某个属性值中有关键字”renyi“）
+使链接表现得像按钮
+<a>（锚）是内联元素，这意味着只有在单击链接的内容时它们才会激活。为了让<a>表现得更像按钮的效果，需要更大的可单击区域。这是可以将<a>的display属性设置为block，然后修改width、height和其他属性来创建需要的样式和单击区域。
+/*使锚元素表现得像按钮一样（扩大可单击区域）*/
+a {
+     display: block; /*关键*/
+     width: 6.6em;
+     height: 5.5em;
+     text-align: center;
+     text-decoration: none;
+     border: 1px solid #66a300;
+     background-color: #8cca12;
+     color: #fff;
+}
+按钮的翻转效果：“翻转”效果指的是，当用鼠标悬停在按钮时，按钮会表现出不同的样式。简单的翻转可以通过:hover伪类，在鼠标悬停时设置链接的背景和文本颜色即可。
+图像翻转效果：使用Pixy方法：不用切换多个背景图，而是使用一张大的背景图（涵盖多幅背景图），并切换它的背景位置。在正常状态下，背景图像在中间；鼠标悬停状态下，背景图像在右边；激活状态下，背景图像在左边。
+/*pixy方法的图像翻转*/
+a:link, a:visited {
+     display: block;
+     width: 203px;
+     height: 72px;
+     text-indent: -1000em; /*为了显示<a>中的文本，要把文本放在背景图像上，使用大的负文本缩进隐藏锚文本（这个负值是根据背景图像显示的位置来确定的）*/
+     background: url(...) -203px 0 no-repeat;
+}
+
+a:hover, a:focus {
+     background-position: right top;
+}
+
+a:active {
+     background-position: left top;
+}
+CSS精灵：CSS精灵实际上是一张包含许多不同的图标、按钮或图形的单个背景图像。
+使用CSS3的属性来实现翻转：text-shadow、box-shadow、border-radius、-webkit-gradient（safari专有）、-webkit-box-reflect(safari专有）。
+/*利用CSS3属性实现翻转*/
+a {
+     display: block;
+     width: 6.6em;
+     height:1.4em;
+     line-height:1.4;
+     text-align:center;
+     text-decoration: none;
+     border: 1px solid #66a300;
+     border-radius: 6px;
+     /*gradient用来实现【渐变】效果。参数有：①渐变类型（直线或放射状）、②渐变方向（这里是左上到左下）、③初始颜色、④结束颜色、⑤中间的过度点*/
+     background-image: -webket-gradient(linear, left top, left bottom, from(#abe142), to(#67a400));
+     background-color: #8cca12;
+     color: #fff;
+     text-shadow: 2px 2px 2px #66a300;
+     box-shadow: 2px 2px 2px #ccc;
+     /*box-reflect用来创建对象的倒影。参数有：①倒影方向、②倒影位置（距离原图像多少px）、蒙板图像（可以使用-webkit-gradient值来自动生成这个蒙板）*/
+     -webkit-box-reflect: below 2px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.52,transparent), to(white)); 
+}
+创建已访问链接样式
+除了链接到特定的文档之外，还可以使用包含片段标识符的链接链接到页面内的特定部分（可跨页面）。实现的方法是：在href的末尾加一个#字符，然后加上要链接的元素的ID。（这适合指向很长的评论页面中的某一评论）
+//例如：假设希望链接到这个页面上的第三个评论。下面代码实现了 在单击链接时，就会跳转到相应的文档，而且页面向下滚动到comment3元素。
+<a href="http://example.com/story.html#comment3">
+     A comment by Simon
+</a>
+但是，当页面内容非常多时，常常很难看到链接把你转到了哪个元素。为了解决这个问题，CSS3允许使用：target 伪类为目标元素设置样式。
+.comment:target {
+     background-color: yellow;
+}
+创建纯CSS的工具提示
+工具提示是当鼠标悬停在具有title属性的元素上时，一些浏览器弹出黄色小文本框。
+/*工具提示的html部分*/
+<p>
+     <a href="#" class="tooltip"> 谷歌 <span>这个一个提示框</span> </a>
+     很好用
+</p>
+
+/*工具提示的CSS部分*/
+a.tooltip {
+     position: relative; /*为提示框的absolute所用*/
+}
+
+a.tooltip span {
+     display: none; /*提示框一开始是隐藏的*/
+}
+
+a.tooltip:hover span,
+a.tooltip:focus span {
+     display: block; /*当鼠标悬停或聚焦在<a>上时，显示提示框*/
+     position:absolute;
+     top: 1em;
+     left: 2em;
+     
+     width: 120px;
+     padding: 0.2em 0.6em;
+     border:1px solid #996633;
+     background-color:#FFFF66;
+     color: #000;
+}
+
+
+第六章 对列表引用样式和创建导航条
+用CSS对列表应用样式
+列表的CSS属性：list-style-image（添加自己定制的项目符号，不常用）、list-style-type（一般设置为none，这样可以去掉默认的项目符号，从而添加自己定义的）
+使用背景图像作为项目符号
+添加自己定制的项目符号的常用方法：先关闭默认项目符号（即list-style-type: none），然后将定制的项目符号作为背景图添加在列表元素上（<li>），然后利用背景图像的定位属性（background-position）来控制自定义项目符号的对准方式。
+ul {
+     margin: 0;
+     padding: 0;
+     list-style-type: none;
+}
+
+li {
+     background: url(...) no-repeat 0 50%; /*可以将垂直位置设置为50%，或者是middle，从而让项目符号垂直居中*/
+     padding-left: 30px;
+}
+创建垂直导航条和水平导航条
+垂直导航栏一般创建方法：
+/*垂直导航栏html部分*/
+<ul class="nav">
+     <li><a href="1.html">Home</a></li>
+     <li><a href="2.html">About</a></li>
+     <li><a href="3.html">Our Services</a></li>
+     <li><a href="4.html">News</a></li>
+     <li><a href="5.html" class="last">Contact</a></li>
+</ul>
+
+/*CSS部分*/
+ul.nav {
+     margin: 0;
+     padding: 0;
+     list-style-type: none;
+     
+     width: 8em; /*设置父列表宽度，代码更容易维护*/
+     background-color: #8BD400;
+     border: 1px solid #486B02;
+}
+
+/*直接对<li>里面的<a>进行样式设置，而不是对<li>，这样做可以提供更好的浏览器兼容性*/
+ul.nav a {
+     display: block; /*扩展锚元素的点击区域*/
+     color: #2B3F00;
+     text-decoration: none;
+     border-top: 1px solid #E4FFD3;
+     border-bottom: 1px solid #486B02;
+     background: url(...) no-repeat 5% 50%;
+     padding: 0.3em 1em;
+}
+
+ul.nav .last a {
+     border-bottom: 0; /*删除最后一个链接的底边框，防止形成“双线”*/
+}
+
+/*翻转效果*/
+ul.nav a:hover,
+ul.nav a:focus,
+ul.nav .selected a {
+     color:  #E4FFD3;
+     background-color: #6DA203;
+}
+简单的水平导航栏（分页导航栏）：
+<!-- 分页导航HTML部分 -->
+<ol class="pagination">
+     <li><a href="search.html?page=1" rel="prev">Prev</a></li>  /*用rel属性表示结果集中的前一个和下一个*/
+     <li><a href="search.html?page=1”>1</a></li>
+     <li class="selected">2</li>
+     <li><a href="search.html?page=3“>3</a></li>
+     <li><a href="search.html?page=4”>4</a></li>
+     <li><a href="search.html?page=5“>5</a></li>
+     <li><a href="search.html?page=3” rel="next">Next</a></li>
+</ol>
+
+/*css部分*/
+ol.pagination {
+     margin: 0;
+     padding: 0;
+     list-style-type: none;
+}
+
+ol.pagination li {
+     float: left; /*创建水平导航关键：把<li>设置为浮动*/
+     margin-right: 0.6em;
+}
+
+ol.pagination a ,
+ol.pagination li.selected {
+     display:block;
+     padding: 0.2em 0.5em;
+     border: 1px solid #ccc;
+     text-decoration: none;
+}
+
+/*翻转效果*/
+ol.pagination a:hover,
+ol.pagination a:focus,
+ol.pagination li.selected {
+     background-color: blue;
+     color: white;
+}
+
+/*prev和next按钮的样式稍有不同*/
+ol.pagination a[rel="prev"],
+ol.pagination a[rel="next"] {
+     border: none;
+}
+
+/*给列表的开头、结尾添加箭头*/
+ol.pagination a[rel="prev"]:before {
+     content: "\00AB";  /*箭头*/
+     padding-right: 0.5em;
+}
+ol.pagination a[rel="next"]:after {
+     content: "\00BB";  /*\00ABs是字符编码，表示 左双箭头*/
+     padding-left: 0.5em;
+}
+水平导航栏：
+<!-- 水平导航条HTML部分 -->
+<ul class="nav">
+     <li><a href="1.html">Home</a></li>
+     <li><a href="2.html">About</a></li>
+     <li><a href="3.html">News</a></li>
+     <li><a href="4.html">Products</a></li>
+     <li><a href="5.html">Services</a></li>
+     <li><a href="6.html">Clients</a></li>
+     <li><a href="7.html">Case Studies</a></li>
+</ul>
+
+/* 水平导航条的 CSS*/
+ul.nav {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: 72em;
+    /*overflow: hidden; 有时要加上，目的是为了清除浮动（详细看第3章）*/
+    background-color: #8BD400;
+}
+
+/*列表水平的关键：让<li>浮动*/
+ul.nav li {
+    float: left;
+}
+
+ul.nav a {
+    display: block;
+    padding: 0 3em;
+    line-height: 2.1em;
+    color: #2B3F00;
+    background-color: #8BD400;
+    text-decoration: none;
+    border-right: 1px solid #486B02;
+}
+
+ul.nav li:last-child a {
+    border-right: 0;
+}
+
+/*翻转效果*/
+ul.nav a:hover,
+ul.nav a:focus {
+    color:  #E4FFD3;
+    background-color: #6DA203;
+}
+小结：创建垂直（水平）列表的一般步骤：①设置整体列表样式 ul.nav {margin:0; padding:0; list-style: none; width: xx;} ②设置列表项中的锚元素 ul.nav a {display:block; text-decoration: none; padding: xx; color: xx; line-height: xx;} ③去掉列表第一项/最后一项多余的样式（border、background等）（一般加上类名或ID来方便设置，或者直接用 li：last-child）④创建翻转效果（:hover，:focus）
+在导航条中突出显示当前页面
+工作方式是：在每个页面的<body>元素中添加一个ID或类名，从而指出用户在当前哪个页面或部分中。然后，在导航列表中的每个项中添加一个对应的ID或类名。可以使用<body>的ID和列表的ID/类名的唯一组合在站点导航中突出显示当前部分或页面。举个栗子：
+<!-- 导航栏的home.html部分 -->
+<body id="home">
+     <ul class="nav">
+          <li><a href="1.html" class="home">Home</a></li>
+          <li><a href="2.html" class="about">About</a></li>
+          <li><a href="3.html" class="services">Services</a></li>
+          <li><a href="4.html" class="work">Work</a></li>
+          <li><a href="5.html" class="news">News</a></li>
+     </ul>
+</body>
+
+<!-- 其他页面的html部分，例如About页面，body中的id就改成"about" -->
+<body id="about">
+     <ul class="nav">
+          <li><a href="1.html" class="home">Home</a></li>
+          <li><a href="2.html" class="about">About</a></li>
+          <li><a href="3.html" class="services">Services</a></li>
+          <li><a href="4.html" class="work">Work</a></li>
+          <li><a href="5.html" class="news">News</a></li>
+     </ul>
+</body>
+
+/*css部分，例如，当用户在Home页面上时，具有home类的导航将显示为被选择状态；在News页面上时，具有news类的导航项将显示为被选择状态*/
+#home .nav .home a,
+#about .nav .about a,
+#services .nav .services a,
+#work .nav .work a,
+#news .nav .news a {
+     background-position:right bottom;
+     color: #fff;
+     cursor: default; /*把光标改成显示默认的箭头样式，这样的话如果鼠标经过被选择的链接，光标就不会改变状态，因此不会诱使用户单击当前页面的链接*/
+}
+
+使用滑动门标签页式导航
+纯CSS下拉菜单（Suckerfish下拉菜单方法）
+Suckerfish下拉菜单技术很简单：只需要把子导航列表嵌套在父列表的项（<li>）中，把子导航列表定位到屏幕之外（left：-999em；），然后当鼠标悬停（:hover）在父列表项时再重新定位子导航列表。
+具体步骤和现实代码如下：
+<!-- Suckerfish下拉菜单技术 HTML部分 -->
+<ul class="nav">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Products</a></li>
+    <li>
+        <a href="#">Services</a>
+        <ul>
+            <li><a href="#">Design</a></li>
+            <li><a href="#">Development</a></li>
+            <li><a href="#">Consultancy</a></li>
+        </ul>
+    </li>
+    <li><a href="#">Contact Us</a></li>
+</ul>
+
+/*Suckerfish下拉菜单技术 CSS部分*/
+/*第一步：首先设置水平菜单的样式：margin，padding设为0，默认项目符号去掉，li向左浮动*/
+/*这里注意：因为其中包含的列表项都是浮动的，它们不占据空间，这回到时列表收缩，为了解决这个问题，我们要把父列表和子导航列表也浮动*/
+ul.nav,
+ul.nav li ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    float: left;
+    border: 1px solid #486B02;
+    background-color: #8BD400;
+}
+
+ul.nav li {
+    float: left;
+    width: 8em;
+    background: #8BD400;
+}
+
+/*第二步：为了确保下拉菜单中的菜单项垂直对齐，需要把列表的宽度设置为与列表项相同*/
+/*第三步：为了在激活之前隐藏实际的下拉菜单，需要把它们的position设置为absolute，然后把它们隐藏到屏幕左边之外*/
+ul.nav li ul {
+    width: 8em;
+    position: absolute;
+    left:-999em;
+}
+
+/*第四步：这是关键之处。在父列表项中添加:hover，把下拉菜单的位置改回正常位置，这样下拉菜单就会重新出现*/
+.nav li:hover ul {
+    left: auto;
+}
+
+/*第五步：把导航链接<a>设置为block，然后修改列表外观，设置背景颜色和鞋面边距*/
+ul.nav a {
+    display: block;
+    color: #2B3F00;
+    text-decoration: none;
+    padding: 0.3em 1em;
+    border-right: 1px solid #486B02;
+    border-left: 1px solid #E4FFD3;
+}
+
+ul.nav li li a {
+    border-top: 1px solid #E4FFD3;
+    border-bottom: 1px solid #486B02;
+    border-left: 0;
+    border-right: 0;
+}
+
+ul.nav li:last-child a {
+    border-right: 0;
+    border-bottom: 0;
+}
+
+ul a:hover,
+ul a:focus {
+    color: #E4FFD3;
+    background-color: #6DA203;
+}
+创建CSS图像映射
+CSS图像映射的意思就是：在一张图片上，当鼠标悬停到图片上的某个特定的地方时，就会在这个特定的地方弹出一个框显示一些信息。具体是用到 列表、锚、和一些高级的CSS来实现。大致步骤如下：①设置div容器的宽度和高度，让它和图片的尺寸一样。然后将div的position设置为relative（关键）。②设置列表的“常规”样式：即margin、padding为0，list-style为none ③对锚链接<a>进行绝对定位，然后让它们分别定位到图片上的相应位置。④创建翻转效果，一般是将一个白色的实线边框应用于鼠标悬停时的链接。
+具体代码：https://github.com/AllenMinD/CSS-Mastery-note/blob/master/CSS%E5%9B%BE%E5%83%8F%E6%98%A0%E5%B0%84.html
+Flickr风格的图像映射：就是框框变成了双线框，然后每个框下都带有文字说明。具体代码（待实践）
+创建远距离翻转效果（待实践）
+远距离翻转效果是一种鼠标悬停事件，它在页面的其他地方触发显示方式的改变。
+实现方式：①在锚链接内嵌套一个或多个元素 ②然后，使用绝对定位对嵌套的元素分别定位 
+尽管显示在不同的地方，但是它们都包含在同一个父锚中，所以可以对同一个鼠标悬停事件做出反应。因此当鼠标悬停在一个元素上时，可以影响另一个元素的样式。
+使用定义列表
+定义列表由两个核心组件组成：定义术语<dt>和一个或多个定义描述<dd>。
+
+第七章 对表单和数据表格应用样式
+创建有吸引力且可访问的数据表格
+即时是相当简单的数据表格，如果包含的行和列比较多的话，它们也可能很难阅读。如果在数据单元之间没有分隔符，信息就会混杂在一起，形成杂乱的布局；相反，有大量空白的表格也很难阅读，因为列和单元格之间的距离太远了，失去了视觉上的关联。
+表格<table>元素中特有的元素：<caption>是整个表格的标题、<colgroup>和<col>：colgroup元素能有使用col元素对一个或多个列定义和分组（就好像tr元素能够对整行应用样式）、<thead><tbody><tfoot>用作逻辑划分、<tr>代表表格的一行、<th>代表列标题或行标题、<td>是每个单元格的内容
+表格中特有的属性：用来<table>元素中的summary属性可以用来描述表格的内容（类似<img>中的alt属性）、用在<th>中的scope属性可以设置为“row”或者“col"来定义它们是行标题还是列标题
+利用上述元素和属性举个实例，创建一个日历表格的基本轮廓：
+<!-- 一个日历表格的html -->
+<table class="cal" summary="A calendar style date picker">
+    <!-- 整个表格的标题 -->
+    <caption>
+        <a href="#" rel="prev">&lt;</a>
+            January 2008
+        <a href="#" rel="next">&gt;</a>
+    </caption>
+    <!-- colgroup元素能够使用col元素来对一个或多个列定义和分组 -->
+    <colgroup>
+        <col id="sun">
+        <col id="mon">
+        <col id="tue">
+        <col id="wed">
+        <col id="thu">
+        <col id="fri">
+        <col id="sat">
+    </colgroup>
+    <!-- 每一列的标题 -->
+    <thead>
+        <tr>
+            <th scope="col">Sun</th>
+            <th scope="col">Mon</th>
+            <th scope="col">Tue</th>
+            <th scope="col">Wed</th>
+            <th scope="col">Thu</th>
+            <th scope="col">Fri</th>
+            <th scope="col">Sat</th>
+        </tr>
+    </thead>
+    <!-- 每一行中的每一个单元格里的内容 -->
+    <tbody>
+        <tr>
+            <td><a href="#">30</a></td>
+            <td><a href="#">31</a></td>
+            <td><a href="#">1</a></td>
+            <td><a href="#">2</a></td>
+            <td><a href="#">3</a></td>
+            <td><a href="#">4</a></td>
+            <td><a href="#">5</a></td>
+        </tr>
+        <tr>
+            <td><a href="#">6</a></td>
+            <td><a href="#">7</a></td>
+            <td><a href="#">8</a></td>
+            <td><a href="#">9</a></td>
+            <td><a href="#">10</a></td>
+            <td><a href="#">11</a></td>
+            <td><a href="#">12</a></td>       
+        </tr>
+        ...
+    </tbody>
+</table>
+对表格应用的CSS样式：border-collapse属性（当值为collapse时，单元格共享边框）、border-spacing属性（用来控制单元格之间的距离）
+让单元格产生斜面效果：为了让表格的单元格产生【斜面效果】，需要在各个边上设置不同的颜色：顶部和左边颜色浅，底部和右边颜色深。
+创建简单和复杂的表单布局
+<fieldset>元素（用来对相关的信息块进行分组）、<legend>元素（常常嵌套在<fieldset>里面，作为fieldset的标题）
+<!-- fieldset实例 -->
+<fieldset>
+     <legend>Title</legend>
+     <div>
+          <input type="text"/>
+     </div>
+</fieldset>
+<label>元素用来在每个表单元素中添加有意义的描述性标签。要把<label>元素与表单控件（<input>等）关联起来，有两种方式：隐式方式（把表单元素嵌套在label元素中）和显式方式（把label的for属性设置为相关联的表单元素的id名称）
+<!-- label的 隐式关联 -->
+<label>
+     email
+     <input name="email" type="text"/>
+</label>
+ 
+<!-- label的 显式关联 -->
+<label for="email">email</label>
+<input name="email" id="email" type="text"/>
+简单基本的表单布局
+<!-- 表单的html部分 -->
+<fieldset>
+    <legend>Title</legend>
+    <!-- input[type="text"] -->
+    <div>
+        <label for="name">Name: <em class="required">(*)</em></label>
+        <input type="text" id="name" name="name">
+    </div>
+    <!-- textarea -->
+    <div>
+        <label for="text">Message: </label>
+        <textarea name="text" id="text"></textarea>
+    </div>   
+
+    <!-- radio -->
+    <div>
+        <label for="remember-yes">
+            <input type="radio" name="remember" id="remember-yes" class="radio" value="yes">
+            Yes
+        </label>           
+    </div>
+    <div>
+        <label for="remember-no">
+            <input type="radio" name="remember" id="remember-no" class="radio" value="no" checked="checked">
+            No
+        </label>           
+    </div>
+</fieldset>     
+
+/* fieldset表单的CSS*/
+fieldset {
+    margin: 1em 0;
+    padding: 1em;
+    border: 1px solid #ccc;
+    background: #f8f8f8;
+}
+legend {
+    font-weight: bold;
+}
+label {
+    display: block;
+    cursor: pointer;
+}
+/*input[type="text"]的样式*/
+input[type="text"] {
+    width: 20em;
+}
+/*textarea的样式*/
+textarea {
+    width: 100%;
+    height: 10em;
+}
+/*文本表单选中时的样式*/
+input[type="text"]:focus,
+textarea:focus {
+    background: #ffc;
+}
+/*radio、checkbox、submit的样式*/
+input.radio,
+input.checkbox,
+input.submit {
+    width: auto;
+    margin-right: 1em;
+}
+复杂的表单布局：为了便于浏览，减少使用的垂直空间，有必要将标签和表单元素水平放置。另外，还要注意【可访问的数据输入元素】、【多列复选框】、【提交按钮】、【表单反馈】等问题。（待实践）
+对各种表单元素应用样式
+     这里指的是对<input>、<textarea>、<radio>、<checkbox>等元素的样式，详细见上一点的代码。
+提供可访问的表单反馈
+当用户忘了填写或者填写的格式不正确时，就要在表单的旁边添加一个错误消息，这就是表单反馈。
+创建表单反馈的方法：①将反馈文本放在一个em中 ②将这个em放在表单标签（<label>） 中 ③对反馈的em进行绝对定位，让它出现在文本输入元素的右边（当然，事先要将表单中所有段落的position设置为relative）④对反馈em进行样式的设定
+<!-- 表单反馈的html -->
+<div>
+    <label for="name">Name: <em class="required">(*)</em>
+        <em class="feedback">用户名已经被占用!</em>
+    </label>
+    <input type="text" id="name" name="name">
+</div>
+
+/*表单反馈的CSS*/
+div {
+    position: relative;
+}
+.feedback {
+    position: absolute;
+    left: 30em; /*left、right和top的值根据具体位置来定*/
+    right: 0;
+    top: 0.5em;
+    font-weight: bold;
+    color: #760000;
+    padding-left: 18px;
+    background: url(...) no-repeat left top;
+}
+
+
+第八章 布局
+所有CSS布局技术的根本都是3个基本概念：定位、浮动、外边距操纵
+对页面进行计划和布局
+想要创建可伸缩且容易维护的CSS系统，首先应该检查设计，寻找重复的模式，这包括页面结构中的模式或在站点中元素反复出现的方式。
+先把页面划分为打得结构性区域，比如容器、页眉、内容区域和页脚、
+然后对内容区域本身，开始建立网格结构
+最后，在各个内容区域中寻找不同的布局结构
+结构设计完之后，现在可以开始关注不同类型的内容，给它们一些有意义的名称，分析它们之间的关系，看能不能合并成一个内容
+查看每个内容块的结构，看看不同的类型中是否有共同的模式。例如每个类容块可能有自己的页眉和页脚，对于相类似的模式，尽量采用一般的类名，然后根据上下文应用样式
+找出模式并确定命名后，最好马上开始定义即将要使用的元素，这是有好处的
+让设计在页面中水平居中
+对于像<div>这种块级元素，只需定义<div>的宽度，然后水平外边距设置为auto，就可以实现水平居中。
+div {
+     width: 920px;
+     margin-left: auto;
+     margin-right: auto;
+}
+在IE中，text-align:center被IE误解为让所有东西居中（而不只是文本），所以在IE中，可以直接利用这点。具体是让body元素中的所有东西居中，包括div容器，然后让div容器中的内容重新向左对齐。
+body {
+     text-align: center;
+}
+
+div {
+     width: 920px;
+     margin: 0 auto;
+     text-align: left;
+}
+创建两列和三列的基于浮动的布局
+基于浮动的布局中，只需要设置希望定位的元素的宽度，然后让它们向左或向右浮动。
+浮动的元素不再占据普通流中的任何空间，不再对包围它们的块框产生任何影响。为了解决这个问题，有通常有2种解决办法：①浮动几乎所有东西，然后在整个文档的“战略点”（比如页眉或页脚）上进行一次或两次浮动清理 ②使用溢出方法清理某些元素的内容（overflow：hidden）。
+两列的浮动布局：步骤①为每个列设置宽度 ②将次要内容左浮动，主要内容右浮动 ③在主内容中添加一点padding（以避免其中包含的文本紧挨着元素边缘） ④在所有浮动元素中添加display：inline（这个预防措施用来防止IE中的双外边距浮动产生的bug） ⑤对包含浮动元素的容器进行浮动清除（overflow：hidden）
+<!-- 两列浮动布局 html部分 -->
+<div class="content">
+    <!-- 这个设计的次要内容（.secondary)位于页面左面，主要类容(.primary)位于右边；但是为了提要易用性和可访问性，在html中.primary放在了.secondary前面 -->
+    <!-- 这样做原因是：主内容是页面上最重要的东西，在html文档中应该先出现。其次，这样可以方便屏幕阅读器用户，它们不用经过很长事件的链接列表和不太重要的内容就能找到主内容部分 -->
+    <div class="primary">我是主要内容我是主要内容我是主要内容我是主要内容我是主要内容我是主要内容</div>
+
+    <div class="secondary">我是次要内容我是次要内容我是次要内容我是次要内容我是次要内容我是次要内容我是次要内容我是次要内容</div>
+</div>
+
+/*两列浮动布局 CSS部分*/
+.content .primary {
+    width: 650px;
+    padding-right: 20px;
+    float: right;
+    display: inline; /*在所有浮动元素中添加了display:inline为了防止IE中双外边距浮动产生bug*/
+
+    background-color: #e1e1e1;
+    border: 1px solid #000;
+}
+
+.content .secondary {
+    width: 230px;
+    float: left;
+    display: inline;
+
+    background-color: #e1e1e1;
+    border: 1px solid #000;
+}
+
+.content {
+    overflow: hidden; /*因为这些元素是浮动的，它们不再在普通流中占据任何空间，这回导致“坍塌”现象（页脚向上升）为了避免这种情况，需要对它们的父元素应用溢出方法，从而清理浮动元素*/
+
+    width: 920px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #e1e1e1;
+    border: 1px solid #000;
+    padding: 10px;
+}
+三列的浮动布局：HTML部分与创建两列浮动布局非常相似，唯一差异是在内容div中添加了两个新的div：一个用于主内容，一个用于次要内容。CSS部分也与两列浮动布局相似，将次要内容向左浮动，将主要内容向右浮动；然后在主内容div中，将主div向左浮动，将次要div向右浮动。（这其实就是将主要内容区域分为两列，从而形成三列的效果）
+<!-- 三列浮动布局 html部分 -->
+<div class="content">
+    <div class="primary">
+            <div class="primary">主要内容div1</div>
+            <div class="secondary">主要内容div2</div>
+    </div>
+
+    <div class="secondary">次要内容</div>
+</div>
+
+/*三列浮动布局 CSS部分*/
+div {
+    background-color: #e1e1e1;
+}
+
+.content {
+    overflow: hidden;  /*用来清除浮动*/
+
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    width: 960px;
+}
+
+.content .primary {
+    width: 670px;
+    float: right;
+    display: inline;
+}
+
+.content .secondary {
+    width: 230px;   
+    float: left;
+    display: inline;
+}
+
+/*.primary里面的两个div的CSS*/
+.content .primary .primary {
+    width: 400px;
+    float: left;
+    display: inline;
+}
+
+.content .primary .secondary {
+    width: 230px;
+    padding-right: 20px;
+    float: right;
+    display: inline;
+}
+创建固定宽度布局、流式布局、弹性布局
+固定宽度布局：元素的宽度都以像素为单位。这种布局的缺点是无法充分利用空间，随着屏幕尺寸的变大元素的宽度不会跟着变大。
+流式布局：元素的尺寸用百分数作为单位。这种布局的元素会随着屏幕尺寸的变化而变化，但缺点是窗口宽度较小时，行变得很窄，很难阅读（解决方法是；添加一个以px或者em为单位的min-width）；还有一个缺点是窗口太大，那么行就变长，也很难阅读（解决方法是：不要横跨浏览器而只是让容器只横跨宽度的一部分（85%左右）、还可以考虑用百分数来设置padding和margin、或者还可以设置max-width）。计算百分数：如果设计者使用的宽度为960px，而大多数用户的浏览器窗口设置为1250px，那么使用百分数是（960 ÷ 1250） * 100 = 76.8%
+弹性布局：相对于字号（而不是浏览器宽度）来设置元素的宽度，以em为单位设置宽度，可以确保在字号增加时整个布局随之扩大。
+将固定宽度布局转换为弹性布局的技巧：要设置基字号，让1em大致相当于10px。大多数浏览器上的默认字号是16px（即1em），而10px大约是16px的62.5%，所以让body的字号设置为62.5%即可。
+body {
+     font-size: 62.5%;
+     text-align: center;
+}
+
+/*作者建议：内部宽度用百分数，而容器宽度用em。这样的话，内部宽度仍然是相对字号的，这样就可以方便地修改布局的总尺寸，不必修改每个元素的宽度*/
+.wrapper {
+     width: 92em; /*容器宽度*/
+     max-width: 95%;
+     margin: 0 auto;
+     text-align: left;
+}
+
+.content .primary {
+     width: 72.82%;
+     float: right;
+     display: inline;
+}
+
+.content .secondary {
+     width: 25%;
+     float: left;
+     display: inline;
+}
+
+.content .primary .primary {
+     width: 59.7%;
+     float: left;
+     display: inline;
+}
+
+.content .primary .secondary {
+     width: 34.33%;
+     padding-right: 2em;
+     float: right;
+     display: inline;
+}
+
+创建高度相等的列、CSS3列
+创建高度相等的列 关键 是：给每个框设置大的底内边距（padding-bottom），然后用数值相似的负外边距（margin）消除这个高度。
+<!-- HTML -->
+<div class="wrapper">
+    <div class="box">
+        <h1>Andy Budd</h1>
+        <p>哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈哈哈啊哈哈哈啊哈哈哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈</p>
+        <div class="bottom"></div>
+    </div>
+
+    <div class="box">
+        <h1>Richard Rutter</h1>
+        <p>哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈</p>
+        <div class="bottom"></div>
+    </div>
+
+    <div class="box">
+        <h1>Jeremy Keith</h1>
+        <p>哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈哈哈啊哈</p>
+        <div class="bottom"></div>
+    </div>               
+</div>
+
+/* CSS */
+.wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.box {
+    width: 250px;
+    margin-left: 20px;
+    float: left;
+    display: inline;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    /*给每个框设置大的底内边距（padding-bottom），然后用数值相似的负外边距（margin-bottom）消除这个高度。*/
+    /*这个事例中，给每个元素设置550px的padding-bottom，-500px的margin-bottom，50px的差值在每个框的底部形成可见的内边距*/
+    padding-bottom: 550px;
+    margin-bottom: -500px;
+
+    background-color: #89ac10;
+    margin-left: 20px;
+}
+
+/*把box的底部补齐*/
+.bottom {
+    position: absolute;
+    bottom: 0px;
+    height: 50px;  /*.bottom的高度为padding-bottom + margin-bottom*/
+    width: 290px;
+    background-color: #89ac10;
+    margin-left: -20px;
+}
+CSS3也可以创建等高文本列。用到的属性有：column-count（列数）、column-width（列宽）、column-gap（列与列之间的距离）和column-rule（分割线）。（在不支持这些属性的浏览器上要加上 -moz- 和 -webkit- 前缀）
+<!-- html -->
+<div class="col">
+    <p>哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈哈啊哈哈哈哈</p>
+</div>
+
+<!-- CSS -->
+.col {
+    -moz-column-count: 3;
+    -moz-column-width: 14em;
+    -moz-column-gap: 2em;
+    -moz-column-rule: 1px solid #ccc;
+
+    -webkit-column-count: 3;
+    -webkit-column-width: 14em;
+    -webkit-column-gap: 2em;
+    -webkit-column-rule: 1px solid #ccc;
+
+    column-count: 3;
+    column-width: 14em;
+    column-gap: 2em;
+    column-rule: 1px solid #ccc;
+}
+
+CSS框架和CSS系统
+CSS框架：这些框架的目标是简化CSS的使用，帮组用户方便地创建各种常用的布局，而不需要编辑底层的CSS。这些框架鼓励开发人员使用一系列标记模式和命名约定，然后在幕后管理布局。受欢迎的3个框架是：YUI Grids、Blueprint和960。
+CSS框架的缺点：框架会改变编写标记的方式，破坏表现与意义的分离；如果使用框架控制布局，开发人员就不得不使用表现性的标记，这与基于表格的设计很相似；框架要求在设计中必须使用特定的网络结构；如果选用某个框架，你可能会在每一个项目中都使用它，因此思维方式很可能会逐渐僵化。
+为了克服CCS框架的缺点，就需要CSS系统。CSS系统是一个工具箱，其中包含可重用的样式和标记模式，可以用它们开发站点专用的框架。这个工具箱可以包含全局reset、排版样式、表单处理、登录表单、日历表格和导航列表等等常用的HTML组件的标记模式。CSS系统是自我定制的。
+
+第九章 bug和bug修复
+如何跟踪CSSbug
+常见的CSS问题有：CSS代码中的拼写和语法错误、特殊性和分类次序问题、外边距叠加问题等
+跟踪bug的第一步是检验你的HTML和CSS，检查拼写或语法错误。
+尽量在一开始就避免bug。许多bug是由过分复杂的HTML或CSS造成的。因此尽量使用简单的代码，所以要避免使用花哨的技术，只在绝对必需的情况下才使用hack。只有确认了没有解决问题的简单方法后，才应该开始考虑复杂的解决方案。
+隔离问题：一旦你确信出现了bug，就需要尽力隔离问题。通过隔离问题和识别症状，有可能查明问题的原因并修复它。隔离问题的一种方法是在相关的元素上应用边框或轮廓，看看它们的反应。尝试修改几个属性，看看它们是否iyngxiangbug，如果有影响，查明是怎么影响的。尝试使bug的效果扩大化可能是有帮助的。还有一些常见的解决方案，例如：将position改为relative、将display属性设置为inline（在浮动元素上）或者设置宽度等尺寸，就可以修复很多bug。
+创建基本的测试案例：就是重现bug所需的最少量的HTML和CSS。通过注释代码、修改属性变量、删除HTML中的一些空格等方法来调试测试案例。
+修复问题，而不是修复症状。知道问题的根源，对于实现正确的解决方案是非常有利的。因为给站点应用CSS样式有许多方式，最容易的解决方案就是干脆回避这个问题。
+请求帮助。通过Google查找bug的解决方案，或者去一些活跃的CSS社区项别人提问。
+神秘的hasLayout属性
+hasLayout属性是IE上的一个属性。IE使用布局概念控制元素的尺寸和定位。那些“拥有布局”（have layout）的元素负责本身及其子元素的尺寸设置和定位。如果一个元素“没有拥有布局”，那么它的尺寸和位置由最近的拥有布局的祖先元素控制。
+hack和过滤器
+一些开发人员误认为，自己掌握的hack和过滤器数量越多，自己的专业水平就越高，其实不是，而是应该明智地使用hack和过滤器，不到万不得已（只能用它来解决）的时候就不要用。
+最常见的浏览器bug及其修复方法
+双外边距浮动bug（IE出现）
+3像素文本偏移bug（IE出现）
+IE6的重复字符bug（IE出现）
+IE6的“藏猫猫”bug（IE出现）
+相对容器中的绝对定位（IE出现）
+分级浏览器支持
+首先，需要确定一组浏览器，希望确保站点在这些浏览器中的表现一致。对于这些浏览器，希望站点的外观大体上相同，也允许存在一些细微差异，只要差异不大即可。
+接下来，确定一组已经过时但仍然比较重要的浏览器。即使显示效果不完美并且在浏览器之间有差异，也是可以接受的，只要不影响访问内容即可。
+最后，确定一组完全过时的你不想正是支持的浏览器。对于这些浏览器，可以接受非常显著的设计变化，更好的方式是对于这些浏览器完全取消样式。
+
+
+
+
+
+
