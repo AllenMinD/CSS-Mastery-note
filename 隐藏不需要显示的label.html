@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>隐藏不需要显示的label</title>
+</head>
+
+<style>
+	/*直接将labeldisplay设置为none会阻止label显示，但是也会阻止许多屏幕阅读器访问它们。所以不这么做*/
+	/*正确的方法是：通过值较大的负文本缩进将label定位到屏幕之外。为了防止label影响布局，还需要将这些label的宽度设置为0*/
+	#monthOfBirthLabel,
+	#yearOfBirthLabel {
+		display: inline-block; /*text-indent要在块级元素中应用才有效*/
+		text-indent: -1000em;
+		width: 0;
+	}
+
+	/*然后可以单独设置各个表单空间的尺寸，并且用margin控制它们的水平间距*/
+	input#dateOfBirth {
+		width: 3em;
+		margin-right: 0.5em;
+	}
+
+	select#monthOfBirth {
+		width: 10em;
+		margin-right: 0.5em;
+	}
+
+	input#yearOfBirth {
+		width: 5em;
+	}
+
+</style>
+
+<body>
+	<div>
+		<!-- 几时不希望显示label，但是让标签出现在源代码中并且可提供屏幕阅读器使用仍然很重要 -->
+		<!-- 这个文档中，我们要尝试通过CSS来隐藏"month of birth" 和 "year of birth" -->
+		<label for="dateOfBirth">Date of Birth:</label>
+		<input type="text" name="dateOfBirth" id="dateOfBirth">
+		
+		<label for="monthOfBirth" id="monthOfBirthLabel">Month of Birth:</label>
+		<select name="monthOfBirth" id="monthOfBirth">
+			<option value="1">January</option>
+			<option value="2">February</option>
+			<option value="3">March</option>
+		</select>
+
+		<label for="yearOfBirth" id ="yearOfBirthLabel">Year of Birth:</label>
+		<input type="text" name="yearOfBirth" id="yearOfBitrh">
+	</div>
+</body>
+</html>
