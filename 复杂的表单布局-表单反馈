@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>表单反馈</title>
+</head>
+
+<style>
+	/*把表单中的所有段落的position都要设置为relative，从而建立一个新的定位上下文*/
+	form div {
+		position: relative;
+	}
+
+	/*错误消息的样式*/
+	form .feedback {
+		position: absolute;
+		left: 15em;
+		right: 0;
+
+		font-weight: bold;
+		color: #760000;
+		padding-left: 18px;
+	}
+
+</style>
+
+<body>
+	<!-- 制作表单反馈的最好的方法是：将错误消息文本放在表单的label中，然后进行CSS定位 -->
+	<form>
+		<div>
+			<label for="emial">
+				邮箱地址:
+				<em class="feedback">邮箱格式错误！</em>
+			</label>
+			<input type="text" id="email" name="email">
+		</div>
+	</form>
+</body>
+</html>
