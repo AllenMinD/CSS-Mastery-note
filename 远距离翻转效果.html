@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>CSS图像映射</title>
+</head>
+
+<style>
+	.imagemap {
+		width: 833px;
+		height: 500px;
+		position: relative; /*图像映射的关键*/
+	}
+	.imagemap ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	/*把各个链接的热点（.hotspot）定位到相应图像上*/
+	.imagemap a .hotspot {
+		position: absolute; /*对列表项中的锚 在图片上 进行定位*/
+		display: block;
+		width: 50px;
+		height: 60px;
+	}	
+	.imagemap .roof a .hotspot {
+		top: 90px;
+		left: 585px;
+	}
+	.imagemap .window a .hotspot {
+		top: 250px;
+		left: 540px;
+	}
+	.imagemap .road a .hotspot {
+		top: 350px;
+		left: 130px;
+	}
+
+	/*把各个链接的远程连接文本（.link）集体定位到一个固定的位置*/
+	.imagemap a .link {
+		position: absolute;
+		display: block;
+		width: 10em;
+		right: -11em;  /*这里我们将它们都定义到图片外的右边*/
+		cursor: pointer;
+	}
+	.imagemap .roof a .link {
+		top: 0;
+	}
+	.imagemap .window a .link {
+		top: 1.2em;
+	}	
+	.imagemap .road a .link {
+		top: 2.4em;
+	}
+
+	/*翻转效果*/
+	.imagemap a:hover .hotspot,
+	.imagemap a:focus .hotspot {
+		border: 3px solid #fff;  /*热点的翻转效果：显示白框*/
+	}
+
+	.imagemap a:hover .link,
+	.imagemap a:hover .link {
+		color: #0066FF;  /*链接文本的翻转效果：改变字体颜色*/
+	}
+</style>
+
+<body>
+	<div class="imagemap">
+		<img src="pic13.jpg" alt="一张图片" width="833" height="500">
+		
+		<!-- 链接列表 -->
+		<ul>
+			<li class="roof">
+				<a href="#">
+					<span class="hotspot"></span>
+					<span class="link">&raquo; Roof</span>	
+				</a>
+			</li>
+			<li class="window">
+				<a href="#">
+					<span class="hotspot"></span>
+					<span class="link">&raquo; Window</span>
+				</a>
+			</li>
+			<li class="road">
+				<a href="#">
+					<span class="hotspot"></span>
+					<span class="link">&raquo; Road</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+</body>
+</html>
