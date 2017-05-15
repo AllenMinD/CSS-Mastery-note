@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>多列复选框</title>
+</head>
+
+<style>
+	/*去掉fieldset的一些默认样式*/
+	fieldset#favouriteColor {
+		margin: 0;
+		padding: 0;
+		border: none;
+		background: transparent;
+	}
+
+	/*标题h2用作标签，所以它的样式起码看上去要像label*/
+	#favouriteColor h2 {
+		width: 10em;
+		float: left;
+		font-size: 1em;
+		font-weight: normal;
+	}
+
+	/*给div.col设置左浮动，从而创建出两列的布局*/
+	/*因为这个表单中的所有div在默认情况下都已经被清理了，需要使用clear:none覆盖那个声明*/
+	#favouriteColor .col {
+		width: 8em;
+		float: left;
+		clear: none;
+	}
+
+	/*复选框的label不需要浮动*/
+	#favouriteColor label {
+		float: none;
+	}
+</style>
+
+<body>
+	<!-- 为了创建列效果，要将复选框分成两组，每一组放在一个div中各有一个col类。-->
+	<!--然后，将这两个div元素放在一个具有描述性ID的fieldset中-->
+	<fieldset id="favouriteColor">
+		<h2>Favourite Color:</h2>
+		<!-- 第一列 -->
+		<div class="col">
+			<div>
+				<label><input type="checkbox" id="red" name="red">red</label>
+			</div>
+			<div>
+				<label><input type="checkbox" id="blue" name="blue">blue</label>
+			</div>			
+		</div>
+		<!-- 第二列 -->	
+		<div class="col">
+			<div>
+				<label><input type="checkbox" id="yellow" name="yellow">yellow</label>
+			</div>
+			<div>
+				<label><input type="checkbox" id="green" name="green">green</label>
+			</div>				
+		</div>		
+	</fieldset>
+</body>
+</html>
