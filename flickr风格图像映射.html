@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>flickr风格图像映射</title>
+</head>
+
+<style>
+	.imagemap {
+		width: 833px;
+		height: 500px;
+		position: relative; /*图像映射的关键*/
+	}
+	.imagemap ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.imagemap a {
+		position: absolute; /*对列表项中的锚 在图片上 进行定位*/
+		display: block;
+		width: 50px;
+		height: 60px;
+		text-indent: -1000em;
+		text-decoration: none;
+		color: #000;
+		border: 1px solid transparent;
+	}
+	/*把各个链接定位到相应图像上*/
+	.imagemap .roof a {
+		top: 90px;
+		left: 585px;
+	}
+	.imagemap .window a {
+		top: 250px;
+		left: 540px;
+	}
+	.imagemap .road a {
+		top: 350px;
+		left: 130px;
+	}
+
+	/*给外框（outer）和内框（inner）设置样式*/
+	.imagemap a .outer {
+		display: block;
+		width: 54px;
+		height: 64px;		
+		border: 1px solid transparent;
+	}
+	.imagemap a .inner {
+		display: block;
+		width: 50px;
+		height: 60px;
+		margin-left: auto;
+		margin-right: auto;
+		border: 1px solid transparent;
+	}
+
+	/*下方说明文本框.note的样式*/
+	.imagemap a .note {
+		position: absolute;
+		bottom: -4em;
+		width: 7em;
+		padding: 0.2em 0.5em;
+		background-color: #ffc;
+		text-align: center;
+		left: -1000em;  /*将文本隐藏到屏幕左边之外，等到鼠标选定时再对它进行重新定位*/
+		margin-left: -5em;
+	}
+
+	/*翻转效果*/
+	.imagemap a:hover .outer,
+	.imagemap a:focus .outer {
+		border: 1px solid #000;  /*把外框显示出来*/
+	}
+	.imagemap a:hover .inner,
+	.imagemap a:focus .inner {
+		border: 1px solid #fff;  /*把内框显示出来*/
+	}
+
+	.imagemap a:hover .note,
+	.imagemap a:focus .note {
+		left: 50px;  /*把文本框显示出来*/
+	}
+
+	.imagemap a:hover,
+	.imagemap a:focus {
+		text-indent: 0px;  /*把文本你现实出来*/
+	}
+</style>
+
+<body>
+	<div class="imagemap">
+		<img src="pic13.jpg" alt="一张图片" width="833" height="500">
+		
+		<!-- 链接列表 -->
+		<ul>
+			<li class="roof">
+				<a href="#">
+					<span class="outer">
+						<span class="inner">
+							<span class="note">屋顶</span>
+						</span>
+					</span>
+				</a>
+			</li>
+			<li class="window">
+				<a href="#">
+					<span class="outer">
+						<span class="inner">
+							<span class="note">窗口</span>
+						</span>
+					</span>
+				</a>
+			</li>
+			<li class="road">
+				<a href="#">
+					<span class="outer">
+						<span class="inner">
+							<span class="note">公路</span>
+						</span>
+					</span>
+				</a>	
+			</li>
+		</ul>
+	</div>
+</body>
+</html>
